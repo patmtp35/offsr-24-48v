@@ -1,11 +1,13 @@
 ##################################
-# V2.7-PROD - OffGrid Routeur STANDALONE (sans HA, sans .commonv2.yaml)
-# Batterie 24 V + LSA (0–10 V via GP8403) — SmartShunt en Bluetooth
+# OffGrid Routeur STANDALONE (sans Home Assistant) — v2.7
+# Batterie 24 V ou 48 V (flag battery_nominal) + LSA (0–10 V via GP8403)
+# SmartShunt Victron lu en Bluetooth, PZEM-004T pour la puissance réelle
 ##################################
-# Exemple : routeur solaire off-grid STANDALONE, batterie 24 V, SmartShunt en BLE
-# Composant offsr patché 24/48 V (fourni dans components/offsr/, voir README.md à côté)
-# Secrets attendus dans secrets.yaml : wifi_ssid, wifi_password, ota_pswd, api_key,
-#   ip_offsr, ip_gateway, ip_dns, smartshunt500a_mac, smartshunt500a_key
+# - Aucun !secret : tout se règle dans les substitutions en tête de fichier.
+# - api: sans chiffrement et ota: sans mot de passe (choix assumé pour un réseau
+#   privé de confiance) ; à renforcer si l'ESP32 est sur un réseau moins sûr.
+# - time: en sntp (aucune dépendance à Home Assistant pour l'heure).
+# - Le composant offsr patché est fourni dans components/offsr/ (voir README.md).
 ##################################
 
 substitutions:
@@ -26,11 +28,20 @@ substitutions:
   log_level: "VERBOSE"
   baud_ratelog: "0"
 
-  ota_pswd: !secret ota_pswd
+  # ===== A REMPLIR (ex-secrets.yaml, tout est ici maintenant) =====
+  wifi_ssid: "A_REMPLIR"
+  wifi_password: "A_REMPLIR"
+  ap_password: "A_REMPLIR"          # mot de passe du point d'accès de secours (8 car. min)
 
-  adress_ip: !secret ip_offsr
-  gateway_ip: !secret ip_gateway
-  dns_ip: !secret ip_dns
+  # Adressage IP fixe de l'ESP32
+  adress_ip: "192.168.X.X"
+  gateway_ip: "192.168.X.1"
+  dns_ip: "192.168.X.1"
+
+  # SmartShunt Victron (VictronConnect > infos produit > encryption data)
+  smartshunt_mac: "AA:BB:CC:DD:EE:FF"
+  smartshunt_bindkey: "A_REMPLIR_32_CARACTERES_HEX"
+  # =================================================================
 
 esp32:
   board: esp32dev
@@ -52,8 +63,8 @@ esphome:
 ###################################
 wifi:
   networks:
-    - ssid: !secret wifi_ssid
-      password: !secret wifi_password
+    - ssid: ${wifi_ssid}
+      password: ${wifi_password}
       priority: 0
       ### maison
 
@@ -63,7 +74,7 @@ wifi:
     subnet: 255.255.255.0
     dns1: ${dns_ip}
   ap:
-    password: !secret ota_pswd
+    password: ${ap_password}
   min_auth_mode: WPA2
 
 mdns:
@@ -74,8 +85,6 @@ logger:
   baud_rate: ${baud_ratelog}
 
 api:
-  encryption:
-    key: !secret api_key
 
 captive_portal:
 
@@ -106,13 +115,11 @@ button:
       sorting_weight: 900
 
 ###################################
-### Composants externes (offsr patché 24V en LOCAL + gp8403, fork Seby)
+### Composants externes (offsr patché en LOCAL + gp8403 de Seby)
 ###################################
-# offsr : version patchée 24/48 V (flag battery_nominal ; bornes et valeurs par défaut de
-# starting/charged/discharged_battery_voltage recalées, cf. README.md du dossier esphome/).
-# À placer dans un dossier "components/offsr/" à côté de ce yaml.
-# Le composant original de Seby a ces 3 seuils bornés en dur 45-60V
-# (calibré pour son propre pack ~48V) : inutilisable tel quel en 24V.
+# offsr : version patchée 24/48 V (flag battery_nominal, bornes des seuils élargies à 20-64 V),
+# fournie dans le dossier "components/offsr/" à côté de ce yaml (voir README.md).
+# L'original de Seby borne ces 3 seuils à 45-60 V (pack ~48 V) : inutilisable tel quel en 24 V.
 external_components:
   - source:
       type: local
@@ -153,16 +160,17 @@ output:
     id: output_gp8403
     channel: 0
 
-# Commande manuelle de la puissance (curseur 0-100 %), a utiliser UNIQUEMENT
-# avec manual_override = ON (offsr n'ecrit alors plus la sortie).
-# Garder activation = ON, ne pas toucher au curseur hors manual_override.
+# Commande manuelle de la puissance (curseur 0-100 % -> sortie 0-1 du GP8403).
+# A utiliser UNIQUEMENT avec manual_override = ON : offsr n'écrit alors plus
+# la sortie, le curseur prend la main. Hors manual_override, offsr et ce
+# curseur écrivent sur la même sortie : le dernier gagne, donc ne pas y toucher.
 fan:
   - platform: speed
     id: manual_power
     name: ${sensor_prefix}_manual_power
     output: output_gp8403
     speed_count: 100
-    restore_mode: ALWAYS_OFF   # jamais de sortie forcee au demarrage
+    restore_mode: ALWAYS_OFF   # jamais de sortie forcée au démarrage
     web_server:
       sorting_weight: 25
 
@@ -185,14 +193,14 @@ modbus:
 ###################################
 ### Bluetooth -> SmartShunt (protocole d'annonce Victron, sans fil)
 ### mac_address / bindkey : à récupérer dans VictronConnect puis à
-### mettre dans secrets.yaml (pas en clair ici)
+### renseigner dans les substitutions en tête de fichier
 ###################################
 esp32_ble_tracker:
 
 victron_ble:
   - id: smartshunt_ble
-    mac_address: !secret smartshunt500a_mac
-    bindkey: !secret smartshunt500a_key
+    mac_address: ${smartshunt_mac}
+    bindkey: ${smartshunt_bindkey}
 
 ###################################
 ### OffSR : cœur du routeur PV → LSA
@@ -273,6 +281,13 @@ sensor:
   - platform: pzemac
     address: 1
     modbus_id: modbus2
+    # Diagnostic câblage : tension ~230 V = L/N bien alimenté ; 0 V = problème 220 V
+    voltage:
+      name: ${sensor_prefix}_pzem_voltage
+    current:
+      name: ${sensor_prefix}_pzem_current
+    power_factor:
+      name: ${sensor_prefix}_pzem_power_factor
     power:
       name: ${sensor_prefix}_power_feedback
       unit_of_measurement: W

@@ -97,8 +97,8 @@ external_components:
 ```
 
 Un yaml complet d'exemple est dans `esphome/offroutsr-24-48v-standalone.yaml`
-(secrets à fournir : `wifi_ssid`, `wifi_password`, `ota_pswd`, `api_key`, `ip_offsr`, `ip_gateway`, `ip_dns`,
-`smartshunt500a_mac`, `smartshunt500a_key`). Version ESPHome testée : 2026.9.1.
+(tout se règle dans les `substitutions:` en tête, sans `secrets.yaml` : voir [`esphome/README.md`](esphome/README.md)).
+Version ESPHome testée : 2026.9.1.
 
 ## Matériel testé
 

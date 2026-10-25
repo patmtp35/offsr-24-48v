@@ -43,10 +43,14 @@ Câblage du PZEM : le 220 V sur ses bornes L/N, la liaison TTL en plus, et **le 
 ## Installation
 
 1. Copie le dossier `esphome/` dans ta configuration ESPHome (ou seulement `components/offsr/` à côté de ton YAML).
-2. Crée `secrets.yaml` avec : `wifi_ssid`, `wifi_password`, `ota_pswd`, `api_key`, `ip_offsr`, `ip_gateway`, `ip_dns`,
-   `smartshunt500a_mac`, `smartshunt500a_key` (MAC et clé de liaison à lire dans VictronConnect).
-3. Règle dans `substitutions:` du YAML : `battery_nominal`, `sensor_prefix`, le nom, et dans `sun:` tes coordonnées.
+2. Remplis les `substitutions:` en tête du YAML (il n'y a ni `secrets.yaml` ni `!secret`) : `wifi_ssid`, `wifi_password`,
+   `ap_password`, `adress_ip`, `gateway_ip`, `dns_ip`, `smartshunt_mac`, `smartshunt_bindkey` (MAC et clé de liaison à lire
+   dans VictronConnect), ainsi que `battery_nominal`, `sensor_prefix` et le nom.
+3. Mets tes coordonnées dans `sun:` (utile seulement si tu t'en sers dans des automatisations).
 4. Compile et flashe. Version ESPHome testée : 2026.9.1.
+
+**Sécurité réseau :** ce YAML n'active ni chiffrement de l'API ni mot de passe OTA, pour un routeur sur un réseau privé
+de confiance (et sans Home Assistant). Si l'ESP32 est sur un réseau partagé, ajoute `api: encryption:` et un mot de passe OTA.
 
 ## Flag 24 V / 48 V
 
