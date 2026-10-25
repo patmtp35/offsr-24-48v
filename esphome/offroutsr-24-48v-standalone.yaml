@@ -20,7 +20,7 @@ substitutions:
   # Tension nominale du pack : "24" ou "48" (choisit les seuils par défaut du routeur)
   battery_nominal: "24"
 
-  device_description: "Prod Routeur Offgrid - 24 V Gel + LSA - 100% standalone"
+  device_description: "Prod Routeur Offgrid - ${battery_nominal} V + LSA - 100% standalone"
   time_timezone: "Europe/Paris"
   projectname: "Pat.OffSrT"
   appversion: "2.7-standalone"
