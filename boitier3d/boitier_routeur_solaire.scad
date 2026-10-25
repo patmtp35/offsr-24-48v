@@ -80,7 +80,9 @@ usb_pcb_t   = 1.6;         // [A MESURER] épaisseur du PCB
 usb_comp_h  = 15;          // hauteur du composant le plus haut, côté composants (mesuré)
 usb_above   = 2;           // bas de la prise USB au-dessus de la surface du PCB (mesuré)
 usb_h       = 6;           // [A MESURER] hauteur de la prise USB (la fenêtre fait 7)
-usb_setback = 1.5;         // retrait de la prise par rapport à la face intérieure de la paroi +X
+usb_front_len = 5.77;      // longueur de la partie avant étroite de la carte, du bord de la plaque vers l'intérieur (mesuré)
+usb_front_w = 33.63;       // largeur de cette partie avant (mesuré) ; l'épaulement entre 36,77 et 33,63 sert de butée
+usb_front_inset = 0;       // recul de la face avant de la carte par rapport au bord de la plaque (0 : à fleur)
 usb_y       = 15;          // axe Y de la carte, même axe que le trou d'alimentation de l'ESP32
 usb_win     = [14, 7];     // fenêtre dans la paroi : largeur, hauteur (mesuré)
 usb_rec     = [22, 12, 2]; // logement extérieur pour le corps du connecteur : largeur, hauteur, profondeur
@@ -91,8 +93,10 @@ rail_lip    = 1.5;         // recouvrement de la carte par les lèvres et les é
 rail_t      = 1.5;         // épaisseur des épaulements sous la carte
 rail_gap    = 0.4;         // jeu autour de la carte (0,3 avant)
 rail_start  = 14;          // lèvres et épaulements seulement à partir de là (laisse libre le côté bornier)
-usb_x1 = int_x/2 - usb_setback;    // face avant de la carte
-usb_x0 = usb_x1 - usb_pcb[0];      // face arrière de la carte (côté bornier)
+usb_x_edge = (int_x - 0.6)/2;      // bord de la plaque côté +X
+usb_x1 = usb_x_edge - usb_front_inset;   // face avant de la carte (côté prise USB)
+usb_xs = usb_x1 - usb_front_len;         // épaulement de la carte = butée dans les glissières
+usb_x0 = usb_x1 - usb_pcb[0];            // face arrière de la carte (côté bornier)
 usb_zc = -(usb_top_gap + usb_pcb_t + usb_above + usb_h/2);   // axe de la prise, repère plaque
 
 // ---------------- Positions des bossages de couvercle ----------------
@@ -170,29 +174,38 @@ module encoche() {
     }
 }
 
-// Glissières sous la plaque : la carte entre par le côté bornier (-X) et s'arrête contre la butée (+X).
+// Glissières sous la plaque : la carte entre par le côté bornier (-X). Les glissières se resserrent sur les
+// 5,77 mm de la partie avant étroite de la carte ; l'épaulement de la carte vient buter contre ce resserrement.
 module usb_rails() {
-    y0 = usb_y - usb_pcb[1]/2;
+    y0 = usb_y - usb_pcb[1]/2;      // bords de la partie large
     y1 = usb_y + usb_pcb[1]/2;
+    y0n = usb_y - usb_front_w/2;    // bords de la partie avant étroite
+    y1n = usb_y + usb_front_w/2;
     z_lo = -(usb_top_gap + usb_pcb_t + 0.15);   // dessus de l'épaulement (sous la carte)
     z_hi = -(usb_top_gap - 0.15);               // dessous de la lèvre (sur la carte)
     zb   = z_lo - rail_t;                       // bas des glissières
     xw0  = usb_x0 - 4;                          // début des parois (guidage à l'entrée)
     xl0  = usb_x0 + rail_start;                 // début des lèvres et des épaulements
-    xe   = usb_x1 + 1;                          // fin : butée de la carte
+    xe   = usb_x_edge;                          // fin des glissières : bord de la plaque
     for (s = [0, 1]) {
         yw = (s == 0) ? y0 - rail_gap - rail_wall : y1 + rail_gap;   // paroi
-        yl = (s == 0) ? y0 - rail_gap : y1 - rail_lip;               // lèvre, épaulement, butée
-        translate([xw0, yw, zb]) cube([xe - xw0, rail_wall, -zb + 0.01]);
-        translate([xl0, yl, z_hi]) cube([xe - xl0, rail_lip + rail_gap, -z_hi + 0.01]);
-        translate([xl0, yl, zb]) cube([xe - xl0, rail_lip + rail_gap, rail_t + 0.01]);
-        translate([usb_x1, yl, z_lo]) cube([xe - usb_x1, rail_lip + rail_gap, z_hi - z_lo]);
+        yl = (s == 0) ? y0 - rail_gap : y1 - rail_lip;               // lèvre et épaulement, partie large
+        yn = (s == 0) ? y0n - rail_gap : y1n - rail_lip;             // lèvre et épaulement, partie étroite
+        translate([xw0, yw, zb]) cube([xe - xw0, rail_wall, -zb + 0.01]);                                  // paroi, sur toute la longueur
+        translate([xl0, yl, z_hi]) cube([usb_xs - xl0, rail_lip + rail_gap, -z_hi + 0.01]);                // lèvre, partie large
+        translate([xl0, yl, zb]) cube([usb_xs - xl0, rail_lip + rail_gap, rail_t + 0.01]);                 // épaulement, partie large
+        translate([usb_xs, yn, z_hi]) cube([xe - usb_xs, rail_lip + rail_gap, -z_hi + 0.01]);              // lèvre, partie étroite
+        translate([usb_xs, yn, zb]) cube([xe - usb_xs, rail_lip + rail_gap, rail_t + 0.01]);               // épaulement, partie étroite
+        // butée : comble l'écart entre la paroi et la partie étroite, la partie large de la carte s'y appuie
+        if (s == 0) translate([usb_xs, y0 - rail_gap, zb]) cube([xe - usb_xs, y0n - y0, -zb + 0.01]);
+        else        translate([usb_xs, y1n + rail_gap, zb]) cube([xe - usb_xs, y1 - y1n, -zb + 0.01]);
     }
 }
 
 // Volumes indicatifs du module, pour l'aperçu "ensemble" (repère plaque)
 module usb_module() {
-    translate([usb_x0, usb_y - usb_pcb[1]/2, -usb_top_gap - usb_pcb_t]) color("green", 0.5) cube([usb_pcb[0], usb_pcb[1], usb_pcb_t]);
+    translate([usb_x0, usb_y - usb_pcb[1]/2, -usb_top_gap - usb_pcb_t]) color("green", 0.5) cube([usb_xs - usb_x0, usb_pcb[1], usb_pcb_t]);
+    translate([usb_xs, usb_y - usb_front_w/2, -usb_top_gap - usb_pcb_t]) color("green", 0.5) cube([usb_front_len, usb_front_w, usb_pcb_t]);
     translate([usb_x0, usb_y - usb_pcb[1]/2 + 2, -usb_top_gap - usb_pcb_t - usb_comp_h]) color("red", 0.4) cube([usb_pcb[0] - 6, usb_pcb[1] - 4, usb_comp_h]);
     translate([usb_x1 - 14, usb_y - 6.75, -usb_top_gap - usb_pcb_t - usb_above - usb_h]) color("white", 0.7) cube([14, 13.5, usb_h]);
 }

@@ -23,6 +23,7 @@ Fichier : `boitier_routeur_solaire.scad` (OpenSCAD). Choisir la pièce avec `par
 - Le fichier n'a pas été compilé automatiquement : faire F6 sur chaque pièce dans OpenSCAD.
 - Couvercle : imprimé et validé. Boîte : à réimprimer avec la nouvelle disposition et la fenêtre USB. Plaque : à réimprimer avec les glissières.
 - À mesurer : `gland_above` (hauteur d'entrée de fil des bornes du LSA), épaisseur du PCB du module USB (`usb_pcb_t`), hauteur de sa prise (`usb_h`), hauteur maximale de l'adaptateur ESP32.
+- Carte du module USB : 36,77 × 30,80 mm, avec une partie avant plus étroite (33,63 mm sur 5,77 mm) qui sert de butée dans les glissières.
 
 ## Sécurité
 
