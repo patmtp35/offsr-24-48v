@@ -1,9 +1,9 @@
 ##################################
-# V2.6-PROD - OffGrid Routeur STANDALONE (sans HA, sans .commonv2.yaml)
+# V2.7-PROD - OffGrid Routeur STANDALONE (sans HA, sans .commonv2.yaml)
 # Batterie 24 V + LSA (0–10 V via GP8403) — SmartShunt en Bluetooth
 ##################################
 # Exemple : routeur solaire off-grid STANDALONE, batterie 24 V, SmartShunt en BLE
-# Composant offsr patché 24 V (voir README du dépôt), à placer dans components/offsr/
+# Composant offsr patché 24/48 V (fourni dans components/offsr/, voir README.md à côté)
 # Secrets attendus dans secrets.yaml : wifi_ssid, wifi_password, ota_pswd, api_key,
 #   ip_offsr, ip_gateway, ip_dns, smartshunt500a_mac, smartshunt500a_key
 ##################################
@@ -15,10 +15,13 @@ substitutions:
 
   sensor_prefix: "offsrt"
 
+  # Tension nominale du pack : "24" ou "48" (choisit les seuils par défaut du routeur)
+  battery_nominal: "24"
+
   device_description: "Prod Routeur Offgrid - 24 V Gel + LSA - 100% standalone"
   time_timezone: "Europe/Paris"
   projectname: "Pat.OffSrT"
-  appversion: "2.6-standalone"
+  appversion: "2.7-standalone"
 
   log_level: "VERBOSE"
   baud_ratelog: "0"
@@ -105,8 +108,8 @@ button:
 ###################################
 ### Composants externes (offsr patché 24V en LOCAL + gp8403, fork Seby)
 ###################################
-# offsr : version patchée pour pack 24V (bornes/valeurs par défaut de
-# starting/charged/discharged_battery_voltage recalées, cf. offsr-24v/).
+# offsr : version patchée 24/48 V (flag battery_nominal ; bornes et valeurs par défaut de
+# starting/charged/discharged_battery_voltage recalées, cf. README.md du dossier esphome/).
 # À placer dans un dossier "components/offsr/" à côté de ce yaml.
 # Le composant original de Seby a ces 3 seuils bornés en dur 45-60V
 # (calibré pour son propre pack ~48V) : inutilisable tel quel en 24V.
@@ -200,6 +203,7 @@ offsr:
     battery_voltage_id: bv
     output_id: output_gp8403
     power_id: pzem_power
+    battery_nominal: ${battery_nominal}   # 24 ou 48 : seuils par défaut starting/charged/discharged
 
 ###################################
 ### Binary sensors
@@ -301,6 +305,17 @@ switch:
       id: reverse
       web_server:
         sorting_weight: 40
+
+###################################
+### Multiplicateur de gains PID (sélecteur grossier : 10 / 1 / 0.1 / 0.01)
+###################################
+select:
+  - platform: offsr
+    offsr_id: my_offsr1
+    coeff_multiplier:
+      name: ${sensor_prefix}_coeff_multiplier
+      web_server:
+        sorting_weight: 165
 
 ###################################
 ### RÉGLAGES PID + seuils batterie

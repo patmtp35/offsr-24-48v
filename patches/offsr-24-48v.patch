@@ -1,0 +1,84 @@
+diff --git a/components/offsr/__init__.py b/components/offsr/__init__.py
+index 11fb1ee..5e465d2 100644
+--- a/components/offsr/__init__.py
++++ b/components/offsr/__init__.py
+@@ -17,6 +17,7 @@ CONF_BATTERY_CURRENT_ID = 'battery_current_id'
+ CONF_BATTERY_VOLTAGE_ID = 'battery_voltage_id'
+ CONF_OUTPUT_ID = 'output_id'
+ CONF_POWER_ID = 'power_id'
++CONF_BATTERY_NOMINAL = 'battery_nominal'
+ # CONF_OUTPUT_NEVER_ZERO = 'output_never_zero'
+ 
+ # PidUpdateAction = offsr_ns.class_('PidUpdateAction', automation.Action)
+@@ -35,6 +36,7 @@ CONFIG_SCHEMA = (
+           cv.Required(CONF_BATTERY_VOLTAGE_ID): cv.use_id(sensor.Sensor),     
+           cv.Required(CONF_OUTPUT_ID): cv.use_id(output.FloatOutput),
+           cv.Optional(CONF_POWER_ID): cv.use_id(sensor.Sensor),
++          cv.Optional(CONF_BATTERY_NOMINAL, default=48): cv.one_of(24, 48, int=True),
+ 		  # cv.Optional(CONF_OUTPUT_NEVER_ZERO, default=False): cv.boolean,
+         }
+     )
+@@ -43,6 +45,7 @@ CONFIG_SCHEMA = (
+ async def to_code(config):
+     var = cg.new_Pvariable(config[CONF_ID])
+     await cg.register_component(var, config)
++    cg.add(var.set_battery_nominal(config[CONF_BATTERY_NOMINAL]))
+ 	
+     sens = await cg.get_variable(config[CONF_BATTERY_CURRENT_ID])
+     cg.add(var.set_battery_current_sensor(sens))
+diff --git a/components/offsr/number/__init__.py b/components/offsr/number/__init__.py
+index c9198da..bc59332 100644
+--- a/components/offsr/number/__init__.py
++++ b/components/offsr/number/__init__.py
+@@ -158,7 +158,7 @@ async def to_code(config):
+         
+   if starting_battery_voltage_config := config.get(CONF_STARTING_BATTERY_VOLTAGE):
+         n = await number.new_number(
+-            starting_battery_voltage_config, min_value=45.0, max_value=60.0, step=0.1
++            starting_battery_voltage_config, min_value=20.0, max_value=64.0, step=0.1
+         )
+         await cg.register_component(n, starting_battery_voltage_config)
+         await cg.register_parented(n, offsr_component)
+@@ -166,7 +166,7 @@ async def to_code(config):
+ 
+   if charged_battery_voltage_config := config.get(CONF_CHARGED_BATTERY_VOLTAGE):
+         n = await number.new_number(
+-            charged_battery_voltage_config, min_value=50.0, max_value=60.0, step=0.1
++            charged_battery_voltage_config, min_value=20.0, max_value=64.0, step=0.1
+         )
+         await cg.register_component(n, charged_battery_voltage_config)
+         await cg.register_parented(n, offsr_component)
+@@ -174,7 +174,7 @@ async def to_code(config):
+ 
+   if discharged_battery_voltage_config := config.get(CONF_DISCHARGED_BATTERY_VOLTAGE):
+         n = await number.new_number(
+-            discharged_battery_voltage_config, min_value=45.0, max_value=60.0, step=0.1
++            discharged_battery_voltage_config, min_value=20.0, max_value=64.0, step=0.1
+         )
+         await cg.register_component(n, discharged_battery_voltage_config)
+         await cg.register_parented(n, offsr_component)
+diff --git a/components/offsr/offsr.h b/components/offsr/offsr.h
+index 026af77..61b9822 100644
+--- a/components/offsr/offsr.h
++++ b/components/offsr/offsr.h
+@@ -122,6 +122,20 @@ SUB_SELECT(coeff_multiplier)
+   void set_coeff_multiplier(float value) {this->current_coeff_multiplier_ = value;}
+   float get_coeff_multiplier(void){return this->current_coeff_multiplier_;}
+ 
++  // Flag battery_nominal (24 ou 48 V) : fixe les seuils PAR DEFAUT starting/charged/discharged.
++  // 48 V = valeurs d'origine (53.0 / 55.8 / 55.6). Une valeur deja sauvee en flash par les
++  // entites number reste prioritaire (a re-saisir une fois si on change le flag).
++  // 24 V gel : starting 27.0 (batterie pleine au repos ~25.8 V), charged 28.0, discharged 27.6.
++  void set_battery_nominal(int nominal) {
++#ifdef USE_NUMBER
++    if (nominal == 24) {
++      this->current_starting_battery_voltage_ = 27.0f;
++      this->current_charged_battery_voltage_ = 28.0f;
++      this->current_discharged_battery_voltage_ = 27.6f;
++    }
++#endif
++  }
++
+ #ifdef USE_BINARY_SENSOR
+   bool get_thermostat_cut(void){return this->current_thermostat_cut_;}
+ #endif

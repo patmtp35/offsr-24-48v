@@ -1,27 +1,63 @@
-# offsr 24 V — patch pour le routeur solaire off-grid de SeByDocKy
+# offsr 24 / 48 V — routeur solaire off-grid (composant de SeByDocKy, patché)
 
 Patch minimal du composant ESPHome `offsr` de [SeByDocKy/myESPhome](https://github.com/SeByDocKy/myESPhome)
-pour l'utiliser avec une **batterie 24 V** (pack 2S de 12 V).
+pour l'utiliser avec une **batterie 24 V ou 48 V** (flag `battery_nominal`).
 
-> Ce dépôt ne redistribue pas le code de Seby : il contient un **patch** (`patches/offsr-24v.patch`),
-> un script pour l'appliquer sur un clone de son dépôt, et un exemple de yaml.
-> Tout le mérite du composant revient à SeByDocKy.
+| Dossier | Contenu |
+|---|---|
+| [`esphome/`](esphome/README.md) | **À utiliser tel quel** : composant `offsr` déjà patché + YAML complet + mode d'emploi |
+| `patches/offsr-24-48v.patch` | le patch seul, appliqué sur le commit `12fb7b5` de Seby |
+| `apply.sh` | clone Seby, applique le patch, produit `build/components/offsr` |
+| [`boitier3d/`](boitier3d/README.md) | boîtier imprimé en 3D (OpenSCAD) |
+
+> Tout le mérite du composant revient à SeByDocKy. Voir la section *Licence* sur la provenance du code.
 
 ## Pourquoi un patch
 
 Dans le composant d'origine, les seuils de tension batterie sont **bornés en dur** pour un pack ~48 V
 (pas modifiables par substitutions yaml) :
 
-| Entité | Bornes d'origine | Défaut d'origine | Bornes patchées | Défaut patché |
+| Entité | Bornes d'origine | Défaut d'origine | Bornes patchées | Défaut patché (`battery_nominal: 24`) |
 |---|---|---|---|---|
-| `starting_battery_voltage` | 45–60 V | 53.0 V | 20–32 V | 27.0 V |
-| `charged_battery_voltage` | 50–60 V | 55.8 V | 20–32 V | 28.0 V |
-| `discharged_battery_voltage` | 45–60 V | 55.6 V | 20–32 V | 27.6 V |
+| `starting_battery_voltage` | 45–60 V | 53.0 V | 20–64 V | 27.0 V |
+| `charged_battery_voltage` | 50–60 V | 55.8 V | 20–64 V | 28.0 V |
+| `discharged_battery_voltage` | 45–60 V | 55.6 V | 20–64 V | 27.6 V |
 
-Sur un 24 V, les curseurs ne peuvent donc pas descendre sous 45 V. Les bornes sont dans
-`components/offsr/number/__init__.py`, les défauts C++ dans `components/offsr/offsr.h`.
+Sur un 24 V, les curseurs ne peuvent donc pas descendre sous 45 V. Le patch élargit les bornes à 20–64 V
+(les deux tensions tiennent sur le même curseur) et choisit les défauts avec le flag `battery_nominal` (voir plus bas).
+Les bornes sont dans `components/offsr/number/__init__.py`, les défauts C++ dans `components/offsr/offsr.h`.
 
 Les consignes en ampères (`charging/absorbing/floating_setpoint`) ne sont pas liées à la tension et ne sont pas modifiées.
+
+### Flag 24 V / 48 V (`battery_nominal`)
+
+Le patch ajoute une option au composant `offsr`, sans changer le comportement par défaut (48 V = valeurs d'origine de Seby) :
+
+```yaml
+substitutions:
+  battery_nominal: "24"      # "24" ou "48"
+
+offsr:
+  - id: my_offsr1
+    # ...
+    battery_nominal: ${battery_nominal}
+```
+
+| `battery_nominal` | `starting` | `charged` | `discharged` |
+|---|---|---|---|
+| `48` (défaut) | 53.0 V | 55.8 V | 55.6 V |
+| `24` | 27.0 V | 28.0 V | 27.6 V |
+
+**Piège :** ce flag ne fixe que les valeurs **par défaut**. Si les seuils ont déjà été sauvegardés en flash par le routeur
+(première utilisation, ou réglage fait depuis l'interface web), cette valeur sauvegardée reste prioritaire. Après un
+changement de flag, ressaisis une fois les trois seuils dans l'interface web (ou efface la flash).
+
+### Multiplicateur de gains (`coeff_multiplier`)
+
+Depuis le 25/10/2026, Seby ajoute dans `offsr` un sélecteur `coeff_multiplier` (10 / 1 / 0.1 / 0.01, défaut 1) qui multiplie
+les trois gains `kp`, `ki` et `kd`. Il est inclus dans la version amont utilisée ici ; l'exemple yaml l'expose
+(`select:`). Il sert à adapter les gains à la vitesse de la boucle sans retoucher le rapport entre `kp`, `ki` et `kd`.
+Un multiplicateur de 10 accélère la montée **dix fois** : à n'essayer que par petits pas sur une batterie fragile.
 
 ### Choix des seuils pour un gel 24 V
 
@@ -40,10 +76,12 @@ mesure la tension au repos de ton pack avant de t'y fier.
 ```bash
 git clone https://github.com/SeByDocKy/myESPhome.git
 cd myESPhome
-patch -p1 < /chemin/vers/patches/offsr-24v.patch
+git checkout 12fb7b5   # version amont sur laquelle le patch a été testé (25/10/2026)
+patch -p1 < /chemin/vers/patches/offsr-24-48v.patch
 ```
 
-ou `./apply.sh` depuis ce dépôt (clone Seby + patch, résultat dans `build/components/offsr`).
+ou `./apply.sh` depuis ce dépôt (clone Seby figé sur le commit `12fb7b5`, patch, résultat dans `build/components/offsr`).
+`UPSTREAM_REF=main ./apply.sh` essaie la dernière version de Seby ; si le patch ne s'applique plus, c'est que `offsr` a changé en amont.
 
 Puis copie `components/offsr/` à côté de ton yaml ESPHome et déclare-le en local :
 
@@ -58,7 +96,7 @@ external_components:
     refresh: 0s
 ```
 
-Un yaml complet d'exemple est dans `examples/offroutsr-24v-standalone.yaml`
+Un yaml complet d'exemple est dans `esphome/offroutsr-24-48v-standalone.yaml`
 (secrets à fournir : `wifi_ssid`, `wifi_password`, `ota_pswd`, `api_key`, `ip_offsr`, `ip_gateway`, `ip_dns`,
 `smartshunt500a_mac`, `smartshunt500a_key`). Version ESPHome testée : 2026.9.1.
 
@@ -90,8 +128,9 @@ ESP32 DevKit (esp32dev) · DFRobot Gravity GP8403/GP8413 (DAC I2C 0-10 V) · Lon
 ## Licence
 
 Le dépôt amont n'a pas de fichier de licence au moment de ce patch : les droits sur le composant restent à son auteur.
-Ce dépôt ne contient que le patch et la documentation, publiés par leur auteur sous licence MIT (voir `LICENSE`).
-Si Seby ajoute une licence ou préfère que le patch soit intégré directement, une pull request est la meilleure voie.
+Le dossier `esphome/components/offsr/` en contient une copie (commit `12fb7b5` + patch), conservée avec l'attribution à Seby ;
+elle sera retirée s'il le demande. La licence MIT de ce dépôt (voir `LICENSE`) ne couvre que le patch, le YAML et la documentation.
+Si Seby ajoute une licence ou préfère intégrer le patch directement, une pull request est la meilleure voie.
 
 ## Commande manuelle de la puissance
 
