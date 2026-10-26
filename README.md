@@ -100,6 +100,20 @@ Un yaml complet d'exemple est dans `esphome/offroutsr-24-48v-standalone.yaml`
 (tout se règle dans les `substitutions:` en tête, sans `secrets.yaml` : voir [`esphome/README.md`](esphome/README.md)).
 Version ESPHome testée : 2026.9.1.
 
+## Schéma de câblage et photos
+
+![Schéma de câblage](docs/schema-cablage.png)
+
+Schéma vectoriel : [`docs/schema-cablage.svg`](docs/schema-cablage.svg). Bornes du LSA à vérifier sur la notice de ton exemplaire ;
+le câblage 230 V se fait hors tension.
+
+| Boîtier fermé | Boîtier ouvert |
+|---|---|
+| <img src="docs/photo-boitier-ferme.jpg" width="260" alt="Boîtier fermé, dissipateur du LSA et câbles d'entrée et de sortie"> | <img src="docs/photo-boitier-ouvert.jpg" width="420" alt="Intérieur : ESP32 sur platine à bornes, GP8403, PZEM nu, module 230 V vers USB et LSA sur son dissipateur"> |
+
+*Fermé* : dissipateur du LSA en face avant, câbles d'entrée et de sortie. *Ouvert* : ESP32 sur platine à bornes, DAC GP8403,
+PZEM nu, module 230 V → USB fixé sur la plaque de séparation, LSA-H3P40YB sur son dissipateur.
+
 ## Matériel testé
 
 ESP32 DevKit (esp32dev) · DFRobot Gravity GP8403/GP8413 (DAC I2C 0-10 V) · Loncont LSA-H3P40YB

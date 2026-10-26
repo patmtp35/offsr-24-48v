@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1090" viewBox="0 0 1400 1090" font-family="Helvetica, Arial, sans-serif"><rect width="1400" height="1090" fill="#fff"/>
+<text x="30" y="30" font-size="20" text-anchor="start" font-weight="bold" fill="#111">Routeur solaire offsr 24/48 V — schéma de câblage (ESP32 + GP8403 + LSA + PZEM)</text>
+<text x="30" y="50" font-size="12" text-anchor="start" font-weight="normal" fill="#a00">Câblage de la partie 230 V : à faire hors tension, par une personne qualifiée. Aucun fil entre le routeur et la batterie (SmartShunt lu en Bluetooth).</text>
+<rect x="30" y="60" width="180" height="140" rx="6" fill="#f6f7f9" stroke="#333" stroke-width="2"/>
+<text x="120" y="110" font-size="14" text-anchor="middle" font-weight="bold" fill="#111">Sortie 230 V</text>
+<text x="120" y="130" font-size="13" text-anchor="middle" font-weight="normal" fill="#111">de l'onduleur</text>
+<text x="120" y="150" font-size="12" text-anchor="middle" font-weight="normal" fill="#111">(ou source AC)</text>
+<text x="120" y="172" font-size="12" text-anchor="middle" font-weight="normal" fill="#555">N · L · PE</text>
+<rect x="250" y="70" width="70" height="100" rx="6" fill="#fff3e0" stroke="#333" stroke-width="2"/>
+<text x="285" y="115" font-size="13" text-anchor="middle" font-weight="bold" fill="#111">Disj.</text>
+<text x="285" y="132" font-size="12" text-anchor="middle" font-weight="normal" fill="#111">10 A 2P</text>
+<polyline points="210,90 250,90" fill="none" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="320,90 1120,90" fill="none" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="210,150 250,150" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="320,150 560,150" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="210" cy="90" r="4.5" fill="#fff" stroke="#1f5fbf" stroke-width="2"/>
+<circle cx="210" cy="150" r="4.5" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<text x="228" y="82" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f5fbf">N</text>
+<text x="228" y="142" font-size="12" text-anchor="middle" font-weight="bold" fill="#8b4513">L</text>
+<rect x="560" y="110" width="260" height="190" rx="6" fill="#eef4ff" stroke="#333" stroke-width="2"/>
+<text x="690" y="135" font-size="14" text-anchor="middle" font-weight="bold" fill="#111">Loncont LSA-H3P40YB</text>
+<text x="690" y="153" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">régulateur à angle de phase 40 A</text>
+<text x="570" y="176" font-size="11" text-anchor="start" font-weight="normal" fill="#111">L in</text>
+<text x="810" y="176" font-size="11" text-anchor="end" font-weight="normal" fill="#111">L out</text>
+<text x="690" y="215" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">vissé sur dissipateur alu</text>
+<text x="690" y="232" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">sélecteur d'entrée sur 0–10 V</text>
+<text x="650" y="284" font-size="11" text-anchor="middle" font-weight="normal" fill="#111">0-10V</text>
+<text x="710" y="284" font-size="11" text-anchor="middle" font-weight="normal" fill="#111">COM</text>
+<circle cx="560" cy="150" r="4.5" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<circle cx="820" cy="150" r="4.5" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<circle cx="650" cy="300" r="4.5" fill="#fff" stroke="#7b2cbf" stroke-width="2"/>
+<circle cx="710" cy="300" r="4.5" fill="#fff" stroke="#7b2cbf" stroke-width="2"/>
+<polyline points="820,150 1120,150" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="1000" cy="150" r="20" fill="none" stroke="#666" stroke-width="6"/>
+<text x="1000" y="114" font-size="12" text-anchor="middle" font-weight="bold" fill="#666">Tore CT</text>
+<text x="988" y="200" font-size="10" text-anchor="end" font-weight="normal" fill="#666">(sur le fil L seul)</text>
+<rect x="1120" y="60" width="250" height="140" rx="6" fill="#f6f7f9" stroke="#333" stroke-width="2"/>
+<text x="1245" y="105" font-size="14" text-anchor="middle" font-weight="bold" fill="#111">Radiateur bain d'huile</text>
+<text x="1245" y="125" font-size="13" text-anchor="middle" font-weight="normal" fill="#111">850 W max</text>
+<text x="1245" y="145" font-size="12" text-anchor="middle" font-weight="normal" fill="#111">(thermostat mécanique)</text>
+<text x="1245" y="175" font-size="11" text-anchor="middle" font-weight="normal" fill="#555">PE sur la carcasse</text>
+<circle cx="1120" cy="90" r="4.5" fill="#fff" stroke="#1f5fbf" stroke-width="2"/>
+<circle cx="1120" cy="150" r="4.5" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<text x="1135" y="82" font-size="12" text-anchor="start" font-weight="bold" fill="#1f5fbf">N</text>
+<text x="1135" y="142" font-size="12" text-anchor="start" font-weight="bold" fill="#8b4513">L</text>
+<polyline points="380,90 380,395" fill="none" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="380" cy="90" r="5" fill="#1f5fbf"/>
+<polyline points="420,150 420,370" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="420" cy="150" r="5" fill="#8b4513"/>
+<polyline points="110,370 920,370" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="140,395 950,395" fill="none" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="420" cy="370" r="5" fill="#8b4513"/>
+<circle cx="380" cy="395" r="5" fill="#1f5fbf"/>
+<text x="500" y="362" font-size="11" text-anchor="middle" font-weight="normal" fill="#8b4513">phase L (en amont du LSA)</text>
+<text x="500" y="413" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f5fbf">neutre N</text>
+<rect x="60" y="470" width="190" height="150" rx="6" fill="#f6f7f9" stroke="#333" stroke-width="2"/>
+<text x="155" y="520" font-size="13" text-anchor="middle" font-weight="bold" fill="#111">Module 230 V → USB 5 V</text>
+<text x="155" y="538" font-size="12" text-anchor="middle" font-weight="normal" fill="#111">2,1 A, carte nue</text>
+<text x="155" y="560" font-size="11" text-anchor="middle" font-weight="normal" fill="#a00">isolement AC↔USB</text>
+<text x="155" y="575" font-size="11" text-anchor="middle" font-weight="normal" fill="#a00">à vérifier au multimètre</text>
+<text x="155" y="603" font-size="11" text-anchor="middle" font-weight="normal" fill="#555">+ fusible 1 A temporisé</text>
+<polyline points="110,370 110,410" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="110,440 110,470" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<rect x="102" y="410" width="16" height="30" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<text x="98" y="430" font-size="10" text-anchor="end" font-weight="normal" fill="#8b4513">1 A</text>
+<polyline points="140,395 140,470" fill="none" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="110" cy="370" r="5" fill="#8b4513"/>
+<circle cx="140" cy="395" r="5" fill="#1f5fbf"/>
+<circle cx="110" cy="470" r="4.5" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<circle cx="140" cy="470" r="4.5" fill="#fff" stroke="#1f5fbf" stroke-width="2"/>
+<text x="110" y="490" font-size="11" text-anchor="middle" font-weight="bold" fill="#8b4513">L</text>
+<text x="140" y="490" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f5fbf">N</text>
+<rect x="300" y="470" width="220" height="270" rx="6" fill="#f1faf1" stroke="#333" stroke-width="2"/>
+<text x="410" y="495" font-size="14" text-anchor="middle" font-weight="bold" fill="#111">ESP32 DevKit (Vroom)</text>
+<text x="310" y="530" font-size="12" text-anchor="start" font-weight="bold" fill="#111">USB</text>
+<polyline points="250,545 300,545" fill="none" stroke="#d62828" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="250" cy="545" r="4.5" fill="#fff" stroke="#d62828" stroke-width="2"/>
+<circle cx="300" cy="545" r="4.5" fill="#fff" stroke="#d62828" stroke-width="2"/>
+<text x="275" y="537" font-size="10" text-anchor="middle" font-weight="normal" fill="#d62828">USB 5 V</text>
+<text x="512" y="524" font-size="11" text-anchor="end" font-weight="normal" fill="#111">5V (VIN)</text>
+<circle cx="520" cy="520" r="4.5" fill="#fff" stroke="#d62828" stroke-width="2"/>
+<text x="512" y="544" font-size="11" text-anchor="end" font-weight="normal" fill="#111">GND</text>
+<circle cx="520" cy="540" r="4.5" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="512" y="564" font-size="11" text-anchor="end" font-weight="normal" fill="#111">SDA  GPIO22</text>
+<circle cx="520" cy="560" r="4.5" fill="#fff" stroke="#2e9e3e" stroke-width="2"/>
+<text x="512" y="584" font-size="11" text-anchor="end" font-weight="normal" fill="#111">SCL  GPIO21</text>
+<circle cx="520" cy="580" r="4.5" fill="#fff" stroke="#c99700" stroke-width="2"/>
+<text x="512" y="644" font-size="11" text-anchor="end" font-weight="normal" fill="#111">TX  GPIO19</text>
+<circle cx="520" cy="640" r="4.5" fill="#fff" stroke="#ee7d00" stroke-width="2"/>
+<text x="512" y="664" font-size="11" text-anchor="end" font-weight="normal" fill="#111">RX  GPIO18</text>
+<circle cx="520" cy="660" r="4.5" fill="#fff" stroke="#c2185b" stroke-width="2"/>
+<text x="512" y="684" font-size="11" text-anchor="end" font-weight="normal" fill="#111">5V (VIN)</text>
+<circle cx="520" cy="680" r="4.5" fill="#fff" stroke="#d62828" stroke-width="2"/>
+<text x="512" y="704" font-size="11" text-anchor="end" font-weight="normal" fill="#111">GND</text>
+<circle cx="520" cy="700" r="4.5" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="410" y="620" font-size="11" text-anchor="middle" font-weight="normal" fill="#555">liaison UART vers PZEM</text>
+<rect x="580" y="470" width="200" height="140" rx="6" fill="#fff8e6" stroke="#333" stroke-width="2"/>
+<text x="680" y="500" font-size="13" text-anchor="middle" font-weight="bold" fill="#111">DAC DFRobot GP8403</text>
+<text x="680" y="518" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">I2C, adresse 0x5F</text>
+<text x="680" y="588" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">sortie 0–10 V (VOUT0)</text>
+<polyline points="520,520 580,520" fill="none" stroke="#d62828" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="580" cy="520" r="4.5" fill="#fff" stroke="#d62828" stroke-width="2"/>
+<text x="588" y="524" font-size="11" text-anchor="start" font-weight="normal" fill="#111">VCC</text>
+<polyline points="520,540 580,540" fill="none" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="580" cy="540" r="4.5" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="588" y="544" font-size="11" text-anchor="start" font-weight="normal" fill="#111">GND</text>
+<polyline points="520,560 580,560" fill="none" stroke="#2e9e3e" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="580" cy="560" r="4.5" fill="#fff" stroke="#2e9e3e" stroke-width="2"/>
+<text x="588" y="564" font-size="11" text-anchor="start" font-weight="normal" fill="#111">SDA</text>
+<polyline points="520,580 580,580" fill="none" stroke="#c99700" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="580" cy="580" r="4.5" fill="#fff" stroke="#c99700" stroke-width="2"/>
+<text x="588" y="584" font-size="11" text-anchor="start" font-weight="normal" fill="#111">SCL</text>
+<text x="588" y="584" font-size="1" text-anchor="middle" font-weight="normal" fill="#111"></text>
+<polyline points="650,470 650,300" fill="none" stroke="#7b2cbf" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="710,470 710,300" fill="none" stroke="#7b2cbf" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="650" cy="470" r="4.5" fill="#fff" stroke="#7b2cbf" stroke-width="2"/>
+<circle cx="710" cy="470" r="4.5" fill="#fff" stroke="#7b2cbf" stroke-width="2"/>
+<text x="662" y="462" font-size="10" text-anchor="start" font-weight="normal" fill="#7b2cbf">VOUT0</text>
+<text x="722" y="462" font-size="10" text-anchor="start" font-weight="normal" fill="#7b2cbf">GND</text>
+<text x="745" y="420" font-size="12" text-anchor="start" font-weight="bold" fill="#7b2cbf">commande 0–10 V</text>
+<rect x="890" y="470" width="200" height="260" rx="6" fill="#f7f0ff" stroke="#333" stroke-width="2"/>
+<text x="990" y="525" font-size="13" text-anchor="middle" font-weight="bold" fill="#111">PZEM-004T V4 100 A</text>
+<text x="990" y="543" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">9600 bauds, 2 bits de stop</text>
+<text x="990" y="575" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">mesure la puissance réelle</text>
+<text x="990" y="591" font-size="11" text-anchor="middle" font-weight="normal" fill="#444">(détecte le thermostat qui coupe)</text>
+<text x="920" y="492" font-size="11" text-anchor="middle" font-weight="bold" fill="#8b4513">L</text>
+<text x="950" y="492" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f5fbf">N</text>
+<text x="1000" y="492" font-size="11" text-anchor="middle" font-weight="bold" fill="#666">CT</text>
+<polyline points="920,370 920,410" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<polyline points="920,440 920,470" fill="none" stroke="#8b4513" stroke-width="3" stroke-linejoin="round"/>
+<rect x="912" y="410" width="16" height="30" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<text x="908" y="430" font-size="10" text-anchor="end" font-weight="normal" fill="#8b4513">1 A</text>
+<polyline points="950,395 950,470" fill="none" stroke="#1f5fbf" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="920" cy="370" r="5" fill="#8b4513"/>
+<circle cx="950" cy="395" r="5" fill="#1f5fbf"/>
+<circle cx="920" cy="470" r="4.5" fill="#fff" stroke="#8b4513" stroke-width="2"/>
+<circle cx="950" cy="470" r="4.5" fill="#fff" stroke="#1f5fbf" stroke-width="2"/>
+<circle cx="1000" cy="470" r="4.5" fill="#fff" stroke="#666" stroke-width="2"/>
+<polyline points="1000,170 1000,470" fill="none" stroke="#666" stroke-width="3" stroke-linejoin="round" stroke-dasharray="7 5"/>
+<text x="1010" y="300" font-size="11" text-anchor="start" font-weight="normal" fill="#666">câble du tore</text>
+<polyline points="520,640 890,640" fill="none" stroke="#ee7d00" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="890" cy="640" r="4.5" fill="#fff" stroke="#ee7d00" stroke-width="2"/>
+<text x="898" y="644" font-size="11" text-anchor="start" font-weight="normal" fill="#111">RX</text>
+<polyline points="520,660 890,660" fill="none" stroke="#c2185b" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="890" cy="660" r="4.5" fill="#fff" stroke="#c2185b" stroke-width="2"/>
+<text x="898" y="664" font-size="11" text-anchor="start" font-weight="normal" fill="#111">TX</text>
+<polyline points="520,680 890,680" fill="none" stroke="#d62828" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="890" cy="680" r="4.5" fill="#fff" stroke="#d62828" stroke-width="2"/>
+<text x="898" y="684" font-size="11" text-anchor="start" font-weight="normal" fill="#111">5V</text>
+<polyline points="520,700 890,700" fill="none" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="890" cy="700" r="4.5" fill="#fff" stroke="#222" stroke-width="2"/>
+<text x="898" y="704" font-size="11" text-anchor="start" font-weight="normal" fill="#111">GND</text>
+<text x="700" y="632" font-size="11" text-anchor="middle" font-weight="normal" fill="#555">TX ESP → RX PZEM, RX ESP ← TX PZEM</text>
+<text x="700" y="722" font-size="11" text-anchor="middle" font-weight="normal" fill="#a00">5 V du connecteur TTL obligatoire</text>
+<rect x="60" y="670" width="190" height="70" rx="6" fill="#fff" stroke="#333" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="155" y="695" font-size="13" text-anchor="middle" font-weight="bold" fill="#111">Victron SmartShunt</text>
+<text x="155" y="713" font-size="12" text-anchor="middle" font-weight="normal" fill="#111">sur la batterie</text>
+<text x="155" y="729" font-size="11" text-anchor="middle" font-weight="normal" fill="#555">(lecture Bluetooth)</text>
+<polyline points="250,705 300,705" fill="none" stroke="#0a7ea4" stroke-width="3" stroke-linejoin="round" stroke-dasharray="7 5"/>
+<text x="275" y="698" font-size="10" text-anchor="middle" font-weight="normal" fill="#0a7ea4">BLE</text>
+<text x="30" y="790" font-size="15" text-anchor="start" font-weight="bold" fill="#111">Points à respecter</text>
+<text x="30" y="818" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">1.  Le LSA ne coupe que la phase L ; le neutre va directement de la source au radiateur (vérifier le repérage des bornes sur la notice de ton LSA).</text>
+<text x="30" y="842" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">2.  Régler le sélecteur d'entrée du LSA sur 0–10 V ; VOUT0 du GP8403 → borne 0-10V du LSA, GND du GP8403 → borne COM. Sans autre alimentation côté commande.</text>
+<text x="30" y="866" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">3.  PZEM : bornes L/N prises en amont du LSA (tension non découpée) ; tore autour du fil L entre le LSA et le radiateur ; le 5 V du connecteur TTL doit être relié, sinon timeouts.</text>
+<text x="30" y="890" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">4.  Module USB nu : mesurer l'isolement entre ses bornes AC et sa masse USB (circuit ouvert) avant montage, fusible 1 A temporisé sur la phase, carte fixée isolée du dissipateur et du métal.</text>
+<text x="30" y="914" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">5.  Ne jamais brancher le PC en USB sur l'ESP32 en même temps que le module 230 V → USB.</text>
+<text x="30" y="938" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">6.  Terre : PE de la source → carcasse du radiateur et dissipateur du LSA (si métallique, relié à la terre).</text>
+<text x="30" y="962" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">7.  GP8403 alimenté en 5 V (VIN) pour sortir 0–10 V : à confirmer dans la notice du module. I2C : SDA GPIO22, SCL GPIO21. UART : TX GPIO19, RX GPIO18.</text>
+<text x="30" y="986" font-size="12.5" text-anchor="start" font-weight="normal" fill="#111">8.  Disjoncteur 10 A 2P suffisant pour 850 W (≈ 3,7 A) ; calibre à adapter si tu augmentes la charge.</text>
+<polyline points="30,1050 56,1050" fill="none" stroke="#8b4513" stroke-width="4" stroke-linejoin="round"/>
+<text x="62" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">phase L</text>
+<polyline points="133,1050 159,1050" fill="none" stroke="#1f5fbf" stroke-width="4" stroke-linejoin="round"/>
+<text x="165" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">neutre N</text>
+<polyline points="243,1050 269,1050" fill="none" stroke="#7b2cbf" stroke-width="4" stroke-linejoin="round"/>
+<text x="275" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">commande 0–10 V</text>
+<polyline points="402,1050 428,1050" fill="none" stroke="#d62828" stroke-width="4" stroke-linejoin="round"/>
+<text x="434" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">5 V</text>
+<polyline points="477,1050 503,1050" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round"/>
+<text x="509" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">GND</text>
+<polyline points="552,1050 578,1050" fill="none" stroke="#2e9e3e" stroke-width="4" stroke-linejoin="round"/>
+<text x="584" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">SDA</text>
+<polyline points="627,1050 653,1050" fill="none" stroke="#c99700" stroke-width="4" stroke-linejoin="round"/>
+<text x="659" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">SCL</text>
+<polyline points="702,1050 728,1050" fill="none" stroke="#ee7d00" stroke-width="4" stroke-linejoin="round"/>
+<text x="734" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">UART TX</text>
+<polyline points="805,1050 831,1050" fill="none" stroke="#c2185b" stroke-width="4" stroke-linejoin="round"/>
+<text x="837" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">UART RX</text>
+<polyline points="908,1050 934,1050" fill="none" stroke="#0a7ea4" stroke-width="4" stroke-linejoin="round"/>
+<text x="940" y="1054" font-size="11" text-anchor="start" font-weight="normal" fill="#111">Bluetooth</text>
+</svg>
