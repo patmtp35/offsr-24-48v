@@ -36,6 +36,8 @@ SmartShunt (BLE) ─► ESP32 / offsr ─► DAC GP8403 (0-10 V) ─► régulat
 | Régulateur | Loncont LSA-H3P40YB | commande 0-10 V, angle de phase |
 | Mesure puissance | PZEM-004T V4.0 100 A + tore | UART : ESP TX GPIO19 → RX PZEM, ESP RX GPIO18 ← TX PZEM, 9600 bauds, 2 bits de stop |
 | Batterie | Victron SmartShunt | lu en Bluetooth (`esphome-victron_ble`) |
+| Écran | OLED 0,96" 128×64 I2C, marquage **JMD0.96C** (contrôleur SSD1306 probable) | adresse `0x3C`, même bus I2C que le GP8403 (SDA GPIO22, SCL GPIO21), alimenté en 3V3 |
+| Dissipateur | aluminium **110 × 75 mm** | porte le LSA ; sort par une lucarne du couvercle |
 
 Câblage du PZEM : le 220 V sur ses bornes L/N, la liaison TTL en plus, et **le 5 V du connecteur TTL doit être relié**
 (sans lui : octets aléatoires puis timeouts). Il se place côté entrée du LSA, avant le découpage.
@@ -51,6 +53,22 @@ Câblage du PZEM : le 220 V sur ses bornes L/N, la liaison TTL en plus, et **le 
 
 **Sécurité réseau :** ce YAML n'active ni chiffrement de l'API ni mot de passe OTA, pour un routeur sur un réseau privé
 de confiance (et sans Home Assistant). Si l'ESP32 est sur un réseau partagé, ajoute `api: encryption:` et un mot de passe OTA.
+
+## Écran OLED
+
+Écran 0,96" 128×64 en I2C (marquage `JMD0.96C`), branché en parallèle du GP8403 : VCC sur 3V3, GND, SDA GPIO22, SCL GPIO21.
+Réglages en tête du YAML : `oled_address` (`"0x3C"`), `oled_model` (`"SSD1306 128x64"`, ou `"SH1106 128x64"` si l'image est
+décalée ou bruitée sur les bords) et `i2c_frequency` (`"400kHz"`). Le scan I2C du journal doit afficher `0x3C` et `0x5F`.
+
+Quatre lignes, rafraîchies chaque seconde :
+
+1. **état** : `DESACTIVE`, `MANUEL`, `SHUNT ABSENT`, `BATTERIE BASSE` (tension sous `starting`), `THERMOSTAT COUPE`,
+   `ROUTAGE ACTIF` (puissance mesurée ≥ 5 W) ou `VEILLE` ;
+2. **sortie** en % (valeur envoyée au LSA : elle vaut `output_min` au repos, sans que la charge chauffe) ;
+3. **puissance** mesurée par le PZEM, en W ;
+4. **tension et courant** de la batterie.
+
+La police est téléchargée à la compilation (`gfonts://`) : il faut un accès internet sur la machine qui compile.
 
 ## Flag 24 V / 48 V
 

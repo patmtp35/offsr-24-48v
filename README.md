@@ -119,6 +119,8 @@ PZEM nu, module 230 V → USB fixé sur la plaque de séparation, LSA-H3P40YB su
 ESP32 DevKit (esp32dev) · DFRobot Gravity GP8403/GP8413 (DAC I2C 0-10 V) · Loncont LSA-H3P40YB
 (SSR à commande analogique 0-10 V) · PZEM-004T V4.0 (TTL) · SmartShunt Victron lu **en Bluetooth**
 (`esphome-victron_ble`) au lieu de l'UART.
+Écran OLED 0,96" 128×64 I2C (marquage JMD0.96C, SSD1306 probable, adresse 0x3C) · dissipateur aluminium 110 × 75 mm
+pour le LSA (détails dans [`esphome/README.md`](esphome/README.md)).
 
 ## Retours d'expérience (banc de test)
 

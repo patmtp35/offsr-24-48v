@@ -1,5 +1,6 @@
 ##################################
-# OffGrid Routeur STANDALONE (sans Home Assistant) — v2.7
+# V2.8-PROD ajout ecran oled
+# OffGrid Routeur STANDALONE (sans Home Assistant) — v2.8
 # Batterie 24 V ou 48 V (flag battery_nominal) + LSA (0–10 V via GP8403)
 # SmartShunt Victron lu en Bluetooth, PZEM-004T pour la puissance réelle
 ##################################
@@ -17,13 +18,18 @@ substitutions:
 
   sensor_prefix: "offsrt"
 
+  # Écran OLED I2C 0,96" 128x64, marquage JMD0.96C (adresse 0x3C ; si l'image est décalée ou bruitée : "SH1106 128x64")
+  oled_address: "0x3C"
+  oled_model: "SSD1306 128x64"
+  i2c_frequency: "400kHz"
+
   # Tension nominale du pack : "24" ou "48" (choisit les seuils par défaut du routeur)
   battery_nominal: "24"
 
   device_description: "Prod Routeur Offgrid - ${battery_nominal} V + LSA - 100% standalone"
   time_timezone: "Europe/Paris"
   projectname: "Pat.OffSrT"
-  appversion: "2.7-standalone"
+  appversion: "2.8-standalone"
 
   log_level: "VERBOSE"
   baud_ratelog: "0"
@@ -142,7 +148,7 @@ i2c:
     sda: GPIO22
     scl: GPIO21
     scan: true
-    frequency: 800kHz
+    frequency: ${i2c_frequency}
 
 gp8403:
   - id: gp8403_id
@@ -221,6 +227,7 @@ binary_sensor:
     offsr_id: my_offsr1
     thermostat_cut:
       name: ${sensor_prefix}_thermostat_cut
+      id: thermo_cut
 
   - platform: status
     name: "${sensor_prefix} - Status Esp"
@@ -236,6 +243,7 @@ sensor:
     output:
       name: ${sensor_prefix}_output_value
       accuracy_decimals: 3
+      id: out_val
     target:
       name: ${sensor_prefix}_target_current
 
@@ -398,3 +406,37 @@ number:
       id: offrt_output_restart
       web_server:
         sorting_weight: 200
+
+###################################
+### Écran OLED : état du routage, sortie en %, puissance en W
+###################################
+font:
+  - file: "gfonts://Roboto"
+    id: font_oled
+    size: 13
+
+display:
+  - platform: ssd1306_i2c
+    i2c_id: i2c_bus
+    model: ${oled_model}
+    address: ${oled_address}
+    update_interval: 1s
+    lambda: |-
+      float v = id(bv).state;
+      float i = id(bc_smoothed).state;
+      float out = id(out_val).state;
+      float p = id(pzem_power).state;
+      const char *etat;
+      if (!id(activation).state) etat = "DESACTIVE";
+      else if (id(manual_override).state) etat = "MANUEL";
+      else if (std::isnan(v)) etat = "SHUNT ABSENT";
+      else if (v < id(offrt_starting_battery_voltage).state) etat = "BATTERIE BASSE";
+      else if (id(thermo_cut).state) etat = "THERMOSTAT COUPE";
+      else if (!std::isnan(p) && p >= 5.0f) etat = "ROUTAGE ACTIF";
+      else etat = "VEILLE";
+      it.printf(0, 0, id(font_oled), "%s", etat);
+      if (!std::isnan(out)) it.printf(0, 16, id(font_oled), "Sortie : %.0f %%", out * 100.0f);
+      else it.printf(0, 16, id(font_oled), "Sortie : --");
+      if (!std::isnan(p)) it.printf(0, 32, id(font_oled), "Puiss. : %.0f W", p);
+      else it.printf(0, 32, id(font_oled), "Puiss. : --");
+      if (!std::isnan(v) && !std::isnan(i)) it.printf(0, 48, id(font_oled), "%.1f V  %.1f A", v, i);
