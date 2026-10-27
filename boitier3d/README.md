@@ -4,7 +4,7 @@ Boîtier imprimé en 3D (Creality Ender 3 V3 KE, PETG) pour le routeur solaire :
 Gravity GP8403, PZEM-004T-100A, ESP32 sur adaptateur à bornes, et module 230 V → 5 V USB.
 
 Fichier : `boitier_routeur_solaire.scad` (OpenSCAD). Choisir la pièce avec `part` :
-`"boite"`, `"couvercle"`, `"plaque"` (sortie retournée, prête à imprimer) ou `"ensemble"` (aperçu éclaté).
+`"boite"`, `"couvercle"`, `"plaque"` (sortie retournée, prête à imprimer), `"support_oled"`, `"gabarit_oled"` ou `"ensemble"` (aperçu éclaté).
 
 ## Principe
 
@@ -13,6 +13,13 @@ Fichier : `boitier_routeur_solaire.scad` (OpenSCAD). Choisir la pièce avec `par
 - Câbles 230 V par deux presse-étoupes PG13.5 sur les parois ±Y ; alimentation 5 V et antenne par la paroi +X.
 - Les encoches de la plaque sont ouvertes sur le bord : on soulève la plaque sans rien débrancher.
 - Le module USB 230 V → 5 V (carte nue) se glisse sous la plaque ; sa prise USB est en face d'une fenêtre de la paroi +X, au-dessus du trou d'alimentation de l'ESP32.
+
+## Écran OLED 0,96" (module JMD0.96C, I2C)
+
+Support imprimé à part (`support_oled`), vissé à l'extérieur de la paroi +X par 4 vis M2 de 8 mm dans des inserts à chaud M2.
+Le gabarit (`gabarit_oled`) sert à percer les 4 trous des inserts et à repérer le trou de 14 × 6 mm pour le connecteur et les Dupont.
+Cotes du module : circuit 28,6 × 27,15 mm, épaisseur 4 mm avec le verre, zone visible 23,4 × 15,5 mm. Testé : le support convient.
+Emplacement conseillé : à gauche du trou d'alimentation vu de l'extérieur, centre à environ 39 mm de l'axe de ce trou et 28 mm du bas.
 
 ## Impression (PETG, pas de PLA)
 

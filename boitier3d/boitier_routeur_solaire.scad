@@ -1,6 +1,6 @@
 // Boîtier routeur solaire - Ender 3 V3 KE (220 x 220 x 240) - PETG
 // Cotes en mm. Choisir la pièce avec "part" (ou en ligne de commande : -D 'part="boite"').
-// part = "boite" | "couvercle" | "plaque" | "ensemble" (aperçu éclaté)
+// part = "boite" | "couvercle" | "plaque" | "support_oled" | "gabarit_oled" | "ensemble" (aperçu éclaté)
 part = "ensemble";
 $fn = 48;
 
@@ -98,6 +98,24 @@ usb_x1 = usb_x_edge - usb_front_inset;   // face avant de la carte (côté prise
 usb_xs = usb_x1 - usb_front_len;         // épaulement de la carte = butée dans les glissières
 usb_x0 = usb_x1 - usb_pcb[0];            // face arrière de la carte (côté bornier)
 usb_zc = -(usb_top_gap + usb_pcb_t + usb_above + usb_h/2);   // axe de la prise, repère plaque
+
+// ---------------- Écran OLED 0,96" (SSD1306 128x64, I2C 4 broches, module JMD0.96C) ----------------
+// Support imprimé à part, vissé à l'extérieur d'une paroi du boîtier existant par 4 vis M2 dans des inserts à chaud.
+// Dessiné à plat : face avant sur le plateau, poche du circuit vers le haut. Vue de face : connecteur 4 broches en bas.
+// Pièces : part = "support_oled" et part = "gabarit_oled" (gabarit de perçage de la paroi).
+oled_pcb      = [28.6, 27.15]; // circuit : largeur x hauteur (mesuré)
+oled_t        = 4.0;           // épaisseur totale du module avec le verre, sans le connecteur (mesuré ; 2 mm sans le verre)
+oled_gap      = 0.25;          // jeu autour du circuit dans la poche
+oled_win      = [23.4, 15.5];  // fenêtre de la face avant : zone visible du verre, 2,6 mm de marge à droite et à gauche, 15,5 de haut (mesuré)
+oled_win_dy   = -1.0;          // [A VERIFIER] centre de la fenêtre par rapport au centre du circuit ; négatif = vers le connecteur (estimé sur la photo : 6,8 mm entre le bord du circuit opposé au connecteur et le haut de la zone visible)
+oled_hdr_dy   = -(oled_pcb[1]/2 - 2.0);   // axe du connecteur, à ~2 mm du bord du circuit (estimé sur la photo)
+oled_hdr_hole = [14, 6];       // trou dans la paroi pour les broches et les Dupont : largeur x hauteur
+oled_skin     = 1.6;           // épaisseur de la face avant
+oled_scr_d    = 2.4;           // trou de passage des vis M2
+oled_head_d   = 4.4;           // logement de la tête de vis
+oled_head_h   = 1.6;           // profondeur de ce logement
+oled_scr_edge = 3.8;           // distance de l'axe des vis au bord de la poche
+oled_ins_d    = 3.2;           // [A CONFIRMER] trou des inserts à chaud dans la paroi (gabarit)
 
 // ---------------- Positions des bossages de couvercle ----------------
 bx = int_x/2 - 4.5;
@@ -247,6 +265,44 @@ module couvercle() {
     }
 }
 
+// Dimensions du support OLED
+oled_px   = oled_pcb[0] + 2*oled_gap;                  // poche
+oled_py   = oled_pcb[1] + 2*oled_gap;
+oled_sx   = oled_px/2 + oled_scr_edge;                 // axes des vis
+oled_sy   = oled_py/2 + oled_scr_edge;
+oled_w    = 2*(oled_sx + 3.5);                         // support
+oled_h    = 2*(oled_sy + 3.5);
+oled_th   = oled_skin + oled_t + 0.2;                  // épaisseur totale : face avant + poche
+
+module rect_arrondi(w, h, r, t) {
+    hull() for (sx = [-1, 1], sy = [-1, 1])
+        translate([sx*(w/2 - r), sy*(h/2 - r), 0]) cylinder(r = r, h = t);
+}
+
+module support_oled() {
+    difference() {
+        rect_arrondi(oled_w, oled_h, 3, oled_th);
+        // poche du circuit, ouverte côté paroi (vers le haut sur le plateau)
+        translate([-oled_px/2, -oled_py/2, oled_skin]) cube([oled_px, oled_py, oled_th]);
+        // fenêtre de la face avant
+        translate([-oled_win[0]/2, oled_win_dy - oled_win[1]/2, -1]) cube([oled_win[0], oled_win[1], oled_skin + 2]);
+        // 4 vis M2, tête noyée dans la face avant
+        for (sx = [-1, 1], sy = [-1, 1]) translate([sx*oled_sx, sy*oled_sy, 0]) {
+            translate([0, 0, -1]) cylinder(d = oled_scr_d, h = oled_th + 2, $fn = 24);
+            translate([0, 0, -1]) cylinder(d = oled_head_d, h = oled_head_h + 1, $fn = 24);
+        }
+    }
+}
+
+// Gabarit : plaqué sur la paroi, il donne les 4 trous des inserts et la place du trou des Dupont.
+module gabarit_oled() {
+    difference() {
+        rect_arrondi(oled_w, oled_h, 3, 2);
+        for (sx = [-1, 1], sy = [-1, 1]) translate([sx*oled_sx, sy*oled_sy, -1]) cylinder(d = oled_ins_d, h = 4, $fn = 24);
+        translate([-oled_hdr_hole[0]/2, oled_hdr_dy - oled_hdr_hole[1]/2, -1]) cube([oled_hdr_hole[0], oled_hdr_hole[1], 4]);
+    }
+}
+
 // Pour l'impression, la plaque est retournée : face supérieure sur le plateau, glissières vers le haut, sans supports.
 module plaque_impression() {
     translate([0, 0, plate_t]) rotate([180, 0, 0]) plaque();
@@ -255,6 +311,8 @@ module plaque_impression() {
 if (part == "boite") boite();
 else if (part == "couvercle") couvercle();
 else if (part == "plaque") plaque_impression();
+else if (part == "support_oled") support_oled();
+else if (part == "gabarit_oled") gabarit_oled();
 else {
     boite();
     translate([0, 0, floor_t + bt_h]) { color("orange") plaque(); if (usb_on) usb_module(); }
