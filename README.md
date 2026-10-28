@@ -143,10 +143,12 @@ pour le LSA (détails dans [`esphome/README.md`](esphome/README.md)).
 
 ## Licence
 
-Le dépôt amont n'a pas de fichier de licence au moment de ce patch : les droits sur le composant restent à son auteur.
-Le dossier `esphome/components/offsr/` en contient une copie (commit `12fb7b5` + patch), conservée avec l'attribution à Seby ;
-elle sera retirée s'il le demande. La licence MIT de ce dépôt (voir `LICENSE`) ne couvre que le patch, le YAML et la documentation.
-Si Seby ajoute une licence ou préfère intégrer le patch directement, une pull request est la meilleure voie.
+MIT, sur l'ensemble du dépôt :
+
+- le patch, le YAML, la documentation et le boîtier 3D : MIT, Copyright (c) 2026 patmtp35 (fichier `LICENSE`) ;
+- le composant `esphome/components/offsr/` (code de SeByDocKy, copie du commit `12fb7b5` + patch) : MIT, Copyright (c) 2026 e-2-nomy
+  (fichier `esphome/components/offsr/LICENSE`, repris du dépôt amont [myESPhome](https://github.com/SeByDocKy/myESPhome),
+  qui a ajouté sa licence MIT le 28/10/2026).
 
 ## Commande manuelle de la puissance
 

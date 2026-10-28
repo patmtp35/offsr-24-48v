@@ -142,6 +142,6 @@ Si le patch ne s'applique plus, `offsr` a changé en amont : il faut rebaser le 
 ## Provenance et licence
 
 Le composant `offsr` est l'œuvre de [SeByDocKy](https://github.com/SeByDocKy/myESPhome) (extrait du projet pvbrain2).
-Sa copie ici est celle du commit `12fb7b5`, plus le patch de ce dépôt. Le dépôt amont ne contient pas de fichier de
-licence à cette date : les droits sur le composant restent à son auteur. La licence MIT de ce dépôt (voir `../LICENSE`)
-ne couvre que le patch, le YAML et la documentation. Si Seby préfère que cette copie soit retirée, elle le sera.
+Sa copie ici est celle du commit `12fb7b5`, plus le patch de ce dépôt. Le dépôt amont est sous licence MIT
+(Copyright (c) 2026 e-2-nomy) : le texte est conservé dans `components/offsr/LICENSE`. Le reste du dépôt (patch, YAML,
+documentation, boîtier) est sous MIT, Copyright (c) 2026 patmtp35 (voir `../LICENSE`).
