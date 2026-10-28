@@ -145,7 +145,7 @@ pour le LSA (détails dans [`esphome/README.md`](esphome/README.md)).
 
 MIT, sur l'ensemble du dépôt :
 
-- le patch, le YAML, la documentation et le boîtier 3D : MIT, Copyright (c) 2026 patmtp35 (fichier `LICENSE`) ;
+- le patch, le YAML, la documentation et le boîtier 3D : MIT, Copyright (c) 2026 PFU (fichier `LICENSE`) ;
 - le composant `esphome/components/offsr/` (code de SeByDocKy, copie du commit `12fb7b5` + patch) : MIT, Copyright (c) 2026 e-2-nomy
   (fichier `esphome/components/offsr/LICENSE`, repris du dépôt amont [myESPhome](https://github.com/SeByDocKy/myESPhome),
   qui a ajouté sa licence MIT le 28/10/2026).
