@@ -58,7 +58,7 @@ de confiance (et sans Home Assistant). Si l'ESP32 est sur un réseau partagé, a
 
 Écran 0,96" 128×64 en I2C (marquage `JMD0.96C`), branché en parallèle du GP8403 : VCC sur 3V3, GND, SDA GPIO22, SCL GPIO21.
 Réglages en tête du YAML : `oled_address` (`"0x3C"`), `oled_model` (`"SSD1306 128x64"`, ou `"SH1106 128x64"` si l'image est
-décalée ou bruitée sur les bords) et `i2c_frequency` (`"400kHz"`). Le scan I2C du journal doit afficher `0x3C` et `0x5F`.
+décalée ou bruitée sur les bords) et `i2c_frequency` (`"400kHz"`) et `oled_rotation` (`"180°"` ; `"0°"` pour l'orientation normale). Le scan I2C du journal doit afficher `0x3C` et `0x5F`.
 
 Quatre lignes, rafraîchies chaque seconde :
 

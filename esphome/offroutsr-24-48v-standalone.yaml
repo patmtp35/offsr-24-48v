@@ -22,6 +22,7 @@ substitutions:
   oled_address: "0x3C"
   oled_model: "SSD1306 128x64"
   i2c_frequency: "400kHz"
+  oled_rotation: "180°"   # 0° / 90° / 180° / 270° (90/270 : portrait, texte à adapter)
 
   # Tension nominale du pack : "24" ou "48" (choisit les seuils par défaut du routeur)
   battery_nominal: "24"
@@ -420,6 +421,7 @@ display:
     i2c_id: i2c_bus
     model: ${oled_model}
     address: ${oled_address}
+    rotation: ${oled_rotation}
     update_interval: 1s
     lambda: |-
       float v = id(bv).state;
