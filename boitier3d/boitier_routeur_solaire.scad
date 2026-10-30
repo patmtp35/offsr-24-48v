@@ -116,6 +116,19 @@ oled_head_d   = 4.4;           // logement de la tête de vis
 oled_head_h   = 1.6;           // profondeur de ce logement
 oled_scr_edge = 3.8;           // distance de l'axe des vis au bord de la poche
 oled_ins_d    = 3.2;           // [A CONFIRMER] trou des inserts à chaud dans la paroi (gabarit)
+oled_on       = true;          // prévoir dans la boîte les 4 trous d'inserts et le trou des Dupont de l'écran
+oled_y        = -24;           // position du centre de l'écran sur la paroi +X : Y (vu de l'extérieur, négatif = à gauche du trou d'alimentation, qui est à y = 15)
+oled_z        = 28;            // position du centre de l'écran : hauteur au-dessus du bas du boîtier
+
+// Dimensions du support OLED (dérivées)
+oled_px   = oled_pcb[0] + 2*oled_gap;                  // poche
+oled_py   = oled_pcb[1] + 2*oled_gap;
+oled_sx   = oled_px/2 + oled_scr_edge;                 // axes des vis
+oled_sy   = oled_py/2 + oled_scr_edge;
+oled_w    = 2*(oled_sx + 3.5);                         // support
+oled_h    = 2*(oled_sy + 3.5);
+oled_th   = oled_skin + oled_t + 0.2;                  // épaisseur totale : face avant + poche
+
 
 // ---------------- Positions des bossages de couvercle ----------------
 bx = int_x/2 - 4.5;
@@ -171,6 +184,14 @@ module boite() {
         // alimentation et antenne sur la paroi +X, côté ESP32
         translate([int_x/2 + wall/2, 15, floor_t + esp_hole_z]) rotate([0, 90, 0]) cylinder(d = pwr_d, h = wall + 2, center = true);
         translate([int_x/2 + wall/2, 40, floor_t + esp_hole_z]) rotate([0, 90, 0]) cylinder(d = ant_d, h = wall + 2, center = true);
+        // écran OLED 0,96" sur la paroi +X : 4 trous pour les inserts à chaud M2 et trou des Dupont
+        if (oled_on) {
+            for (sx = [-1, 1], sy = [-1, 1])
+                translate([int_x/2 + wall/2, oled_y + sx*oled_sx, oled_z + sy*oled_sy])
+                    rotate([0, 90, 0]) cylinder(d = oled_ins_d, h = wall + 2, center = true, $fn = 24);
+            translate([int_x/2 + wall/2, oled_y, oled_z + oled_hdr_dy])
+                cube([wall + 2, oled_hdr_hole[0], oled_hdr_hole[1]], center = true);
+        }
         // fenêtre USB du module 230 V -> 5 V, au-dessus du trou d'alimentation de l'ESP32
         if (usb_on) {
             zc = floor_t + bt_h + usb_zc;
@@ -264,15 +285,6 @@ module couvercle() {
         for (p = boss_pos) translate([p[0], p[1], -1]) cylinder(d = 3.4, h = lid_t + 2);
     }
 }
-
-// Dimensions du support OLED
-oled_px   = oled_pcb[0] + 2*oled_gap;                  // poche
-oled_py   = oled_pcb[1] + 2*oled_gap;
-oled_sx   = oled_px/2 + oled_scr_edge;                 // axes des vis
-oled_sy   = oled_py/2 + oled_scr_edge;
-oled_w    = 2*(oled_sx + 3.5);                         // support
-oled_h    = 2*(oled_sy + 3.5);
-oled_th   = oled_skin + oled_t + 0.2;                  // épaisseur totale : face avant + poche
 
 module rect_arrondi(w, h, r, t) {
     hull() for (sx = [-1, 1], sy = [-1, 1])

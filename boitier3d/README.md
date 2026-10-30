@@ -19,7 +19,10 @@ Fichier : `boitier_routeur_solaire.scad` (OpenSCAD). Choisir la pièce avec `par
 Support imprimé à part (`support_oled`), vissé à l'extérieur de la paroi +X par 4 vis M2 de 8 mm dans des inserts à chaud M2.
 Le gabarit (`gabarit_oled`) sert à percer les 4 trous des inserts et à repérer le trou de 14 × 6 mm pour le connecteur et les Dupont.
 Cotes du module : circuit 28,6 × 27,15 mm, épaisseur 4 mm avec le verre, zone visible 23,4 × 15,5 mm. Testé : le support convient.
+La boîte prévoit les 4 trous d'inserts et le trou des Dupont (`oled_on`, position `oled_y` / `oled_z`).
 Emplacement conseillé : à gauche du trou d'alimentation vu de l'extérieur, centre à environ 39 mm de l'axe de ce trou et 28 mm du bas.
+
+![Boîtier monté, paroi +X : écran OLED, fenêtre USB, trou d'antenne](photo-boitier-ecran-oled.jpg)
 
 ## Impression (PETG, pas de PLA)
 
