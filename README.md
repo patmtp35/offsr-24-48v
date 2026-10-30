@@ -107,12 +107,12 @@ Version ESPHome testée : 2026.9.1.
 Schéma vectoriel : [`docs/schema-cablage.svg`](docs/schema-cablage.svg). Bornes du LSA à vérifier sur la notice de ton exemplaire ;
 le câblage 230 V se fait hors tension.
 
-| Boîtier fermé | Boîtier ouvert |
-|---|---|
-| <img src="docs/photo-boitier-ferme.jpg" width="260" alt="Boîtier fermé, dissipateur du LSA et câbles d'entrée et de sortie"> | <img src="docs/photo-boitier-ouvert.jpg" width="420" alt="Intérieur : ESP32 sur platine à bornes, GP8403, PZEM nu, module 230 V vers USB et LSA sur son dissipateur"> |
+| Boîtier fermé | Boîtier ouvert | Face avec écran OLED |
+|---|---|---|
+| <img src="docs/photo-boitier-ferme.jpg" width="260" alt="Boîtier fermé, dissipateur du LSA et câbles d'entrée et de sortie"> | <img src="docs/photo-boitier-ouvert.jpg" width="420" alt="Intérieur : ESP32 sur platine à bornes, GP8403, PZEM nu, module 230 V vers USB et LSA sur son dissipateur"> | <img src="docs/photo-boitier-ecran-oled.jpg" width="320" alt="Boîtier monté : écran OLED sur son support, fenêtre USB, trou d'antenne"> |
 
 *Fermé* : dissipateur du LSA en face avant, câbles d'entrée et de sortie. *Ouvert* : ESP32 sur platine à bornes, DAC GP8403,
-PZEM nu, module 230 V → USB fixé sur la plaque de séparation, LSA-H3P40YB sur son dissipateur.
+PZEM nu, module 230 V → USB fixé sur la plaque de séparation, LSA-H3P40YB sur son dissipateur. *Écran OLED* : support imprimé fixé par 4 vis M2 sur la paroi, à côté de la fenêtre USB.
 
 ## Matériel testé
 

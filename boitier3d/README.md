@@ -22,7 +22,7 @@ Cotes du module : circuit 28,6 × 27,15 mm, épaisseur 4 mm avec le verre, zone 
 La boîte prévoit les 4 trous d'inserts et le trou des Dupont (`oled_on`, position `oled_y` / `oled_z`).
 Emplacement conseillé : à gauche du trou d'alimentation vu de l'extérieur, centre à environ 39 mm de l'axe de ce trou et 28 mm du bas.
 
-![Boîtier monté, paroi +X : écran OLED, fenêtre USB, trou d'antenne](photo-boitier-ecran-oled.jpg)
+![Boîtier monté, paroi +X : écran OLED, fenêtre USB, trou d'antenne](../docs/photo-boitier-ecran-oled.jpg)
 
 ## Impression (PETG, pas de PLA)
 
