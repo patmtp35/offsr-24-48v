@@ -1,7 +1,7 @@
 # ESPHome — routeur solaire off-grid `offsr` (batterie 24 V ou 48 V)
 
 Ce dossier est **prêt à compiler** : il contient le composant `offsr` de SeByDocKy déjà patché
-(flag 24 V / 48 V) et un YAML complet autonome (sans Home Assistant).
+(flag 24 V / 48 V) et un YAML complet autonome (sans Home Assistant ou avec :) ).
 
 ```
 esphome/
