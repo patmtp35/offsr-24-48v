@@ -159,3 +159,5 @@ MIT, sur l'ensemble du dépôt :
 3. Retour en auto : curseur à 0 / OFF, puis `manual_override` OFF.
 
 Attention : en manuel, plus aucune protection batterie n'agit, et le curseur ne doit pas être utilisé hors `manual_override` (deux écritures sur la même sortie).
+
+the development could be assisted by an AI agents, closely coached and supervised by developers. Particular attention is given to the software architecture, code quality, maintainability, and test coverage, with the goal of ensuring a robust and well-engineered codebase.
