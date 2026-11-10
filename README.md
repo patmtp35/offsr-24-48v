@@ -67,7 +67,7 @@ Un multiplicateur de 10 accélère la montée **dix fois** : à n'essayer que pa
 - Un seuil `charged` trop bas fait voler au routeur le courant de fin de charge : l'absorption n'est jamais terminée, ce qui use vite un gel.
 - Si ton chargeur compense en température, son absorption monte en hiver (~−48 mV/°C en 24 V) : revois `charged` à la hausse.
 
-**Les défauts 24 V sont des points de départ prudents, pas des valeurs validées.** Ils sont à régler
+**Les défauts 24 V ont fonctionné sur un pack gel (test du 10/11/2026), mais restent des points de départ prudents.** Ils sont à régler
 selon la chimie et l'état de ta batterie (le test a été fait avec un pack gel de plus de 10 ans) :
 mesure la tension au repos de ton pack avant de t'y fier.
 
@@ -136,9 +136,13 @@ pour le LSA (détails dans [`esphome/README.md`](esphome/README.md)).
 
 ## Limites / non testé
 
-- Pas encore validé sur batterie 24 V réelle ni sur la charge finale (ballon 1200 W) ; PID (kp/ki/kd) réglé sur
-  ampoule / radiateur bain d'huile.
-- Détection `thermostat_cut` non testée encore
+- **Validé en 24 V (10/11/2026)** : routeur en service tout un après-midi sur un pack gel 24 V à peu de soleil ; une fois la
+  batterie pleine, le surplus est bien envoyé au radiateur. Validé aussi en 48 V sur banc (radiateur bain d'huile alimenté
+  par l'onduleur : le courant de batterie converge vers la cible sans oscillation).
+- **Pas encore testé** : fort ensoleillement (sortie à `output_max` avec la batterie qui charge encore), passages nuageux
+  prolongés, et la charge finale (ballon 1200 W). PID (kp/ki/kd) réglé sur ampoule / radiateur bain d'huile, avec
+  `ki = 0` et `kd = 0`.
+- Détection `thermostat_cut` non testée avec un vrai ballon à thermostat.
 
 
 ## Licence

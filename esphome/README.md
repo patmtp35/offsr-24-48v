@@ -86,7 +86,7 @@ substitutions:
   ou réglage fait dans l'interface web), la valeur sauvegardée garde la priorité : après un changement de flag,
   ressaisis les trois seuils une fois dans l'interface web.
 - Les curseurs couvrent 20 à 64 V.
-- Les valeurs 24 V sont des points de départ prudents pour un gel, pas des valeurs validées : `charged` doit être
+- Les valeurs 24 V ont fonctionné sur un pack gel (test du 10/11/2026) mais restent des points de départ prudents : `charged` doit être
   la tension d'absorption de ton chargeur moins environ 0,2 V, et `starting` doit se placer au-dessus de la tension
   d'une batterie pleine au repos (~25,8 V). Mesure ton pack avant de t'y fier.
 
